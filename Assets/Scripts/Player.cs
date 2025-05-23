@@ -1,82 +1,82 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Rendering.BuiltIn.ShaderGraph;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
     // player movement
-    public static float moveSpeed = 10f;
-    public static float turnSpeed = 200f;
-    public static float gravity = -9.81f;
+    public float walkSpeed = 2f;
+    public float sprintSpeed = 4f;
+    public float gravity = -9.81f;
+    public float mass = 15;
+    public Transform cameraTransform; // reference to the camera transform for movement direction
+    public Transform body; // reference to the player body transform for rotation
 
     // player inventory
-    public static int bugsNeeded = 5; // number of each bug type needed to complete the quest
-    public static Dictionary<BugType, int> inventory = new Dictionary<BugType, int>(); // diff bug types
-    public static Action OnInventoryUpdate; // event to notify UI of inventory changes
+    public static int bugsNeeded = 5;
+    public static Dictionary<BugType, int> inventory = new Dictionary<BugType, int>();
+    public static Action OnInventoryUpdate;
 
-    // other stuff
     private CharacterController controller;
-    private Rigidbody rb;
-    private Vector3 velocity;
+    private bool sprinting;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        // Optional: Freeze rotation on X and Z to prevent tipping over
-        rb.freezeRotation = true;
-        
         controller = GetComponent<CharacterController>();
-        foreach (BugType bug in System.Enum.GetValues(typeof(BugType)))
+        foreach (BugType bug in Enum.GetValues(typeof(BugType)))
         {
             inventory[bug] = 0;
         }
-        OnInventoryUpdate?.Invoke(); // initialize inventory UI
+        OnInventoryUpdate?.Invoke();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // NAIVE WASD CONTROLS
-        /*
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
-
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        controller.Move(move * moveSpeed * Time.deltaTime);
-
-        // Gravity handling
-        if (controller.isGrounded && velocity.y < 0)
+        // Gravity application
+        Vector3 velocity = controller.velocity;
+        if (!controller.isGrounded)
         {
-            velocity.y = -2f;
+            velocity.y += gravity * mass * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
         }
 
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-        */
+        sprinting = Input.GetButton("Sprint");
 
+        // Get camera-relative input directions
+        Vector3 forward = cameraTransform.forward;
+        Vector3 right = cameraTransform.right;
+        forward.y = 0;
+        right.y = 0;
+        forward.Normalize();
+        right.Normalize();
 
-        // TANK CONTROLS
-        /*
-        float moveInput = Input.GetAxis("Vertical");
-        float turnInput = Input.GetAxis("Horizontal");
-        Vector3 move = transform.forward * moveInput * moveSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + move);
+        // Combine input axes
+        Vector3 input = Input.GetAxis("Horizontal") * right + Input.GetAxis("Vertical") * forward;
 
-        // Turn left/right
-        float turn = turnInput * turnSpeed * Time.fixedDeltaTime;
-        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
-        rb.MoveRotation(rb.rotation * turnRotation);
-        */
-        
-        // ORBIT CAM CONTROLS
+        // Project onto ground if grounded
+        Vector3 move = input;
+        if (controller.isGrounded && input != Vector3.zero)
+        {
+            if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out RaycastHit hit, 1.5f))
+            {
+                move = Vector3.ProjectOnPlane(input, hit.normal).normalized;
+            }
+        }
+
+        // Move the player
+        controller.Move(move * (sprinting ? sprintSpeed : walkSpeed) * Time.deltaTime);
+
+        // Rotate the player to face movement direction
+        if (move != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(move);
+            body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.deltaTime * 5f);
+        }
     }
 
     public void CatchBug(Bug bug)
     {
-        inventory[bug.type] = inventory[bug.type] + 1;
+        inventory[bug.type]++;
         OnInventoryUpdate?.Invoke();
     }
 }

@@ -109,23 +109,11 @@ Transform GetOrCreateParent(string name)
             GameObject prefab = prefabs[Random.Range(0, prefabs.Length-1)];
             Vector3 position = GetRandomDonutPosition();
 
-            Vector3 rayOrigin = new Vector3(position.x, 100f, position.z);
-            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f))
+            Vector3 rayOrigin = new Vector3(position.x, 200f, position.z);
+            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f) && groundHit.collider.CompareTag("Ground"))
             {
                 Vector3 surfacePoint = groundHit.point;
-
-                if (!Physics.Raycast(surfacePoint + Vector3.up * 0.5f, Vector3.up, out RaycastHit overhangHit, 100f))
-                {
-                    SpawnAt(prefab, surfacePoint, parent);
-                }
-                else
-                {
-                    Vector3 correctedPoint = overhangHit.point;
-                    if (!Physics.Raycast(correctedPoint, Vector3.up, 100f))
-                    {
-                        SpawnAt(prefab, correctedPoint, parent);
-                    }
-                }
+                SpawnAt(prefab, surfacePoint, parent);
             }
         }
     }
