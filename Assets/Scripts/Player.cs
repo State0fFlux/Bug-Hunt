@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     // player movement
-    public static float moveSpeed = 5f;
+    public static float moveSpeed = 10f;
+    public static float turnSpeed = 200f;
     public static float gravity = -9.81f;
 
     // player inventory
@@ -17,11 +18,16 @@ public class Player : MonoBehaviour
 
     // other stuff
     private CharacterController controller;
+    private Rigidbody rb;
     private Vector3 velocity;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        // Optional: Freeze rotation on X and Z to prevent tipping over
+        rb.freezeRotation = true;
+        
         controller = GetComponent<CharacterController>();
         foreach (BugType bug in System.Enum.GetValues(typeof(BugType)))
         {
@@ -33,7 +39,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // WASD input (horizontal = A/D, vertical = W/S)
+        // NAIVE WASD CONTROLS
+        /*
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
 
@@ -48,6 +55,23 @@ public class Player : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+        */
+
+
+        // TANK CONTROLS
+        /*
+        float moveInput = Input.GetAxis("Vertical");
+        float turnInput = Input.GetAxis("Horizontal");
+        Vector3 move = transform.forward * moveInput * moveSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(rb.position + move);
+
+        // Turn left/right
+        float turn = turnInput * turnSpeed * Time.fixedDeltaTime;
+        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+        rb.MoveRotation(rb.rotation * turnRotation);
+        */
+        
+        // ORBIT CAM CONTROLS
     }
 
     public void CatchBug(Bug bug)
