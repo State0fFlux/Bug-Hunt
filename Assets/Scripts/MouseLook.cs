@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    public float sensitivityX = 4f;
-    public float sensitivityY = 2f;
+    public float sensitivityX = 15f;
+    public float sensitivityY = 4f;
     public float minimumY = 0f;
     public float maximumY = 30f;
 

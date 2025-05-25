@@ -5,20 +5,28 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // player movement
-    public float walkSpeed = 2f;
-    public float sprintSpeed = 4f;
+    [Header("Movement Settings")]
+    public float walkSpeed = 5f;
+    public float sprintSpeed = 7f;
     public float gravity = -9.81f;
-    public float mass = 15;
-    public Transform cameraTransform; // reference to the camera transform for movement direction
+    public float mass = 60;
+    public Transform cameraPivot; // reference to the camera transform for movement direction
     public Transform body; // reference to the player body transform for rotation
 
     // player inventory
+    [Header("Inventory Settings")]
     public static int bugsNeeded = 5;
     public static Dictionary<BugType, int> inventory = new Dictionary<BugType, int>();
     public static Action OnInventoryUpdate;
 
     private CharacterController controller;
     private bool sprinting;
+
+    // camera bobbing
+    [Header("Camera Bobbing Settings")]
+    public float bobAmount = 0.1f;  // amplitude of bobbing
+    private float bobTimer = 0f;
+    private Vector3 cameraInitialLocalPos;
 
     void Start()
     {
@@ -28,6 +36,7 @@ public class Player : MonoBehaviour
             inventory[bug] = 0;
         }
         OnInventoryUpdate?.Invoke();
+        cameraInitialLocalPos = cameraPivot.localPosition;
     }
 
     void Update()
@@ -43,8 +52,8 @@ public class Player : MonoBehaviour
         sprinting = Input.GetButton("Sprint");
 
         // Get camera-relative input directions
-        Vector3 forward = cameraTransform.forward;
-        Vector3 right = cameraTransform.right;
+        Vector3 forward = cameraPivot.forward;
+        Vector3 right = cameraPivot.right;
         forward.y = 0;
         right.y = 0;
         forward.Normalize();
@@ -60,18 +69,48 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out RaycastHit hit, 1.5f))
             {
                 move = Vector3.ProjectOnPlane(input, hit.normal).normalized;
+                Debug.DrawRay(transform.position, move * 5, Color.red);
             }
         }
 
         // Move the player
-        controller.Move(move * (sprinting ? sprintSpeed : walkSpeed) * Time.deltaTime);
+        controller.Move((sprinting ? sprintSpeed : walkSpeed) * Time.deltaTime * move);
 
         // Rotate the player to face movement direction
         if (move != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(move);
+
+            /*
+            // 1. Extract Euler angles from the target rotation
+            Vector3 euler = targetRotation.eulerAngles;
+
+            // 2. Body gets yaw (Y) and roll (Z), but not pitch
+            Quaternion bodyRotation = Quaternion.Euler(0f, euler.y, euler.z);
+            body.rotation = Quaternion.Slerp(body.rotation, bodyRotation, Time.deltaTime * 5f);
+
+            // 3. Transform gets pitch (X), but keeps the body's yaw (Y) and zero roll
+            Quaternion pitchRotation = Quaternion.Euler(euler.x, 0f, 0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, pitchRotation, Time.deltaTime * 5f);
+            */
+
             body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.deltaTime * 5f);
         }
+
+        // Camera bobbing
+        if (move.magnitude > 0f)// && controller.isGrounded)
+        {
+            bobTimer += Time.deltaTime * 2 * (sprinting ? sprintSpeed: walkSpeed);
+            float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
+            Vector3 newCamPos = cameraInitialLocalPos + new Vector3(0, bobOffset, 0);
+            cameraPivot.localPosition = newCamPos;
+        }
+        else
+        {
+            bobTimer = 0f;
+            cameraPivot.localPosition = Vector3.Lerp(cameraPivot.localPosition, cameraInitialLocalPos, Time.deltaTime * 5f);
+        }
+        print(cameraPivot.localPosition);
     }
 
     public void CatchBug(Bug bug)
