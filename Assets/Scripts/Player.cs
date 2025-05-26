@@ -8,8 +8,6 @@ public class Player : MonoBehaviour
     [Header("Movement Settings")]
     public float walkSpeed = 5f;
     public float sprintSpeed = 7f;
-    public float gravity = -9.81f;
-    public float mass = 60;
     public Transform cameraPivot; // reference to the camera transform for movement direction
     public Transform body; // reference to the player body transform for rotation
 
@@ -19,8 +17,12 @@ public class Player : MonoBehaviour
     public static Dictionary<BugType, int> inventory = new Dictionary<BugType, int>();
     public static Action OnInventoryUpdate;
 
-    private CharacterController controller;
-    private bool sprinting;
+    // components
+    private Rigidbody rb;
+    // input variables
+    private bool sprintInput;
+    private float horizontalInput;
+    private float verticalInput;
 
     // camera bobbing
     [Header("Camera Bobbing Settings")]
@@ -30,27 +32,41 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
         foreach (BugType bug in Enum.GetValues(typeof(BugType)))
         {
             inventory[bug] = 0;
         }
         OnInventoryUpdate?.Invoke();
         cameraInitialLocalPos = cameraPivot.localPosition;
+
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
     }
 
     void Update()
     {
-        // Gravity application
-        Vector3 velocity = controller.velocity;
-        if (!controller.isGrounded)
+        // Get input
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+        sprintInput = Input.GetButton("Sprint");
+
+        // Camera bobbing
+        if (horizontalInput != 0f || verticalInput != 0f) // && controller.isGrounded)
         {
-            velocity.y += gravity * mass * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime);
+            bobTimer += Time.deltaTime * 2 * (sprintInput ? sprintSpeed: walkSpeed);
+            float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
+            Vector3 newCamPos = cameraInitialLocalPos + new Vector3(0, bobOffset, 0);
+            cameraPivot.localPosition = newCamPos;
         }
+        else
+        {
+            bobTimer = 0f;
+            cameraPivot.localPosition = Vector3.Lerp(cameraPivot.localPosition, cameraInitialLocalPos, Time.deltaTime * 5f);
+        }
+    }
 
-        sprinting = Input.GetButton("Sprint");
-
+    void FixedUpdate()
+    {
         // Get camera-relative input directions
         Vector3 forward = cameraPivot.forward;
         Vector3 right = cameraPivot.right;
@@ -64,53 +80,26 @@ public class Player : MonoBehaviour
 
         // Project onto ground if grounded
         Vector3 move = input;
-        if (controller.isGrounded && input != Vector3.zero)
+        if (input != Vector3.zero)
         {
-            if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out RaycastHit hit, 1.5f))
+            if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out RaycastHit hit, 1.5f)) // project onto ground
             {
                 move = Vector3.ProjectOnPlane(input, hit.normal).normalized;
-                Debug.DrawRay(transform.position, move * 5, Color.red);
             }
         }
 
         // Move the player
-        controller.Move((sprinting ? sprintSpeed : walkSpeed) * Time.deltaTime * move);
+        rb.MovePosition(rb.position + (sprintInput ? sprintSpeed : walkSpeed) * Time.fixedDeltaTime * move);
+        Vector3 targetVelocity = (sprintInput ? sprintSpeed : walkSpeed) * move;
+        targetVelocity.y = rb.linearVelocity.y; // Keep vertical velocity (gravity)
+        rb.linearVelocity = targetVelocity;
 
         // Rotate the player to face movement direction
         if (move != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(move);
-
-            /*
-            // 1. Extract Euler angles from the target rotation
-            Vector3 euler = targetRotation.eulerAngles;
-
-            // 2. Body gets yaw (Y) and roll (Z), but not pitch
-            Quaternion bodyRotation = Quaternion.Euler(0f, euler.y, euler.z);
-            body.rotation = Quaternion.Slerp(body.rotation, bodyRotation, Time.deltaTime * 5f);
-
-            // 3. Transform gets pitch (X), but keeps the body's yaw (Y) and zero roll
-            Quaternion pitchRotation = Quaternion.Euler(euler.x, 0f, 0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, pitchRotation, Time.deltaTime * 5f);
-            */
-
-            body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.deltaTime * 5f);
+            body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.fixedDeltaTime * 5f);
         }
-
-        // Camera bobbing
-        if (move.magnitude > 0f)// && controller.isGrounded)
-        {
-            bobTimer += Time.deltaTime * 2 * (sprinting ? sprintSpeed: walkSpeed);
-            float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
-            Vector3 newCamPos = cameraInitialLocalPos + new Vector3(0, bobOffset, 0);
-            cameraPivot.localPosition = newCamPos;
-        }
-        else
-        {
-            bobTimer = 0f;
-            cameraPivot.localPosition = Vector3.Lerp(cameraPivot.localPosition, cameraInitialLocalPos, Time.deltaTime * 5f);
-        }
-        print(cameraPivot.localPosition);
     }
 
     public void CatchBug(Bug bug)
