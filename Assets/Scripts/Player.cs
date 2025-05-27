@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         sprintInput = Input.GetButton("Sprint");
 
         // Camera bobbing
-        if (horizontalInput != 0f || verticalInput != 0f) // && controller.isGrounded)
+        if (horizontalInput != 0f || verticalInput != 0f)
         {
             bobTimer += Time.deltaTime * 2 * (sprintInput ? sprintSpeed: walkSpeed);
             float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
