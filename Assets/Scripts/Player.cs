@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public float mass = 60;
     public Transform cameraPivot; // reference to the camera transform for movement direction
     public Transform body; // reference to the player body transform for rotation
+    
+    public bool walking;
 
     // player inventory
     [Header("Inventory Settings")]
@@ -27,6 +29,11 @@ public class Player : MonoBehaviour
     public float bobAmount = 0.1f;  // amplitude of bobbing
     private float bobTimer = 0f;
     private Vector3 cameraInitialLocalPos;
+
+    // character animations - being used for debug purposes in another scene
+    // ignore/remove if these are causing problems
+    //[Header("Character Animation Settings")]
+    //public Animator animator;
 
     void Start()
     {
@@ -72,6 +79,9 @@ public class Player : MonoBehaviour
                 Debug.DrawRay(transform.position, move * 5, Color.red);
             }
         }
+        
+        // Trigger switch between walk animation or idle animation
+        //animator.SetBool("walking", move.magnitude > 0.001f);
 
         // Move the player
         controller.Move((sprinting ? sprintSpeed : walkSpeed) * Time.deltaTime * move);
