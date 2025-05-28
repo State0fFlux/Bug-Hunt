@@ -6,8 +6,8 @@ public class Player : MonoBehaviour
 {
     // player movement
     [Header("Movement Settings")]
-    public float walkSpeed = 5f;
-    public float sprintSpeed = 7f;
+    public float walkSpeed = 3f; // slowed a little to play nicer with walk cycle
+    public float sprintSpeed = 5f;
     public Transform cameraPivot; // reference to the camera transform for movement direction
     public Transform body; // reference to the player body transform for rotation
     
@@ -32,10 +32,10 @@ public class Player : MonoBehaviour
     private float bobTimer = 0f;
     private Vector3 cameraInitialLocalPos;
 
-    // character animations - being used for debug purposes in another scene
-    // ignore/remove if these are causing problems
-    //[Header("Character Animation Settings")]
-    //public Animator animator;
+    //character animations - being used for debug purposes in another scene
+    //ignore/remove if these are causing problems
+    [Header("Character Animation Settings")]
+    public Animator animator;
 
     void Start()
     {
@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
         }
         
         // Trigger switch between walk animation or idle animation
-        //animator.SetBool("walking", move.magnitude > 0.001f);
+        animator.SetBool("walking", move.magnitude > 0.001f);
 
         // Move the player
         rb.MovePosition(rb.position + (sprintInput ? sprintSpeed : walkSpeed) * Time.fixedDeltaTime * move);
