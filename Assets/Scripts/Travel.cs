@@ -8,17 +8,28 @@ public class Travel : MonoBehaviour
     public float angleChange = 2.5f;          // ANGLE_CHANGE
     public float speed = 1.0f;
 
-    public Vector3 origin = Vector3.zero;
-    public float boundaryRadius = 10.0f;
+    public Vector3 origin = new Vector3(5, 0, 5);
+    public float boundaryRadius = 5.0f;
 
     public float pullConst = 1.0f;
 
     private float wanderAngle = 0f;
     private Rigidbody rb;
 
+    public BugSettings settings;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        if (settings != null)
+        {
+            speed = settings.speed;
+            wanderRadius = settings.wanderRadius;
+            wanderDistance = settings.wanderDistance;
+            origin = settings.origin;
+            boundaryRadius = settings.boundaryRadius;
+        }   
     }
 
     void FixedUpdate()
@@ -44,20 +55,20 @@ public class Travel : MonoBehaviour
 
         rb.AddForce(wanderForce, ForceMode.Acceleration);
 
-        if (rb.velocity.sqrMagnitude > 0.01f)
+        if (rb.linearVelocity.sqrMagnitude > 0.01f)
         {
-            Quaternion look = Quaternion.LookRotation(rb.velocity.normalized);
+            Quaternion look = Quaternion.LookRotation(rb.linearVelocity.normalized);
             rb.rotation = Quaternion.Slerp(rb.rotation, look, 0.1f);
         }
 
         float maxSpeed = speed;
-        if(rb.velocity.magnitude > maxSpeed)
-            rb.velocity = rb.velocity.normalized * maxSpeed;
+        if(rb.linearVelocity.magnitude > maxSpeed)
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
     }
 
     Vector3 Wander()
     {
-        Vector3 circleCenter = rb.velocity.magnitude > 0.1f ? rb.velocity.normalized : transform.forward;
+        Vector3 circleCenter = rb.linearVelocity.magnitude > 0.1f ? rb.linearVelocity.normalized : transform.forward;
         circleCenter *= wanderDistance;
 
         Vector3 displacement = new Vector3(0, 0, -1f) * wanderRadius;
