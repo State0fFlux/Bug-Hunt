@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
@@ -132,7 +133,22 @@ public class Player : MonoBehaviour
 
     public void CatchBug(string bug)
     {
+        print("Gotcha!");
         inventory[bug]++;
         OnInventoryUpdate?.Invoke();
+        CheckInventory();
+    }
+
+    public void CheckInventory()
+    {
+        foreach (var bugCount in inventory.Values)
+        {
+            if (bugCount < bugsNeeded)
+            {
+                return;
+            }
+        }
+        print("You have enough bugs!");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene"); // Load the win scene when all bugs are collected
     }
 }
