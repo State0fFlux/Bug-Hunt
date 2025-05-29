@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
 
     private TextMeshProUGUI inventoryText;
+    public string[] bugs = { "Firefly", "Ladybug" };
 
     void Awake()
     {
@@ -32,9 +33,9 @@ public class UIManager : MonoBehaviour
     void UpdateText()
     {
         inventoryText.text = "";
-        foreach (BugType bug in System.Enum.GetValues(typeof(BugType)))
+        foreach (string bug in bugs)
         {
-            inventoryText.text += bug.ToString() + "s: " + Player.inventory[bug] + "/" + Player.bugsNeeded + "\n";
+            inventoryText.text += bug + "s: " + Player.inventory[bug] + "/" + Player.bugsNeeded + "\n";
         }
     }
 }

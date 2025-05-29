@@ -8,5 +8,5 @@ public class BugSettings : ScriptableObject
     public float wanderRadius = 1.5f;
     public float wanderDistance = 2.0f;
     public Vector3 origin = Vector3.zero;
-    public float boundaryRadius = 10.0f;
+    public float boundaryRadius = 10.0f; 
 }

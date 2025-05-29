@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     // player inventory
     [Header("Inventory Settings")]
     public static int bugsNeeded = 5;
-    public static Dictionary<BugType, int> inventory = new Dictionary<BugType, int>();
+    public static Dictionary<string, int> inventory = new Dictionary<string, int>();
     public static Action OnInventoryUpdate;
 
     // components
@@ -33,9 +33,11 @@ public class Player : MonoBehaviour
     private float bobTimer = 0f;
     private Vector3 cameraInitialLocalPos;
 
+    public string[] bugs = { "Firefly", "Ladybug" };
+
     void Start()
     {
-        foreach (BugType bug in Enum.GetValues(typeof(BugType)))
+        foreach (string bug in bugs)
         {
             inventory[bug] = 0;
         }
@@ -99,9 +101,24 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void CatchBug(Bug bug)
+    public void OnTriggerEnter(Collider other)
     {
-        inventory[bug.type]++;
+        // Debug.Log("hit!");
+        // if (other.gameObject.tag == "Bug")
+        // {
+        Travel bug = other.gameObject.GetComponent<Travel>();
+            // if (travel.BugSettings.bugName == "LadyBug")
+            // {
+
+            // }
+            CatchBug(bug.settings.bugName);
+            Destroy(other.gameObject);
+        // }
+    }
+
+    public void CatchBug(string bug)
+    {
+        inventory[bug]++;
         OnInventoryUpdate?.Invoke();
     }
 }
