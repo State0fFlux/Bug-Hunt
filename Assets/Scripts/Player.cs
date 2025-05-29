@@ -8,10 +8,9 @@ public class Player : MonoBehaviour
     [Header("Movement Settings")]
     public float walkSpeed = 3f; // slowed a little to play nicer with walk cycle
     public float sprintSpeed = 5f;
+    public float turnSmoothness = 25f; // delay for smooth turning;
     public Transform cameraPivot; // reference to the camera transform for movement direction
     public Transform body; // reference to the player body transform for rotation
-    
-    public bool walking;
 
     // player inventory
     [Header("Inventory Settings")]
@@ -21,6 +20,8 @@ public class Player : MonoBehaviour
 
     // components
     private Rigidbody rb;
+    private Animator animator;
+
     // input variables
     private bool sprintInput;
     private float horizontalInput;
@@ -31,11 +32,6 @@ public class Player : MonoBehaviour
     public float bobAmount = 0.1f;  // amplitude of bobbing
     private float bobTimer = 0f;
     private Vector3 cameraInitialLocalPos;
-
-    //character animations - being used for debug purposes in another scene
-    //ignore/remove if these are causing problems
-    [Header("Character Animation Settings")]
-    public Animator animator;
 
     void Start()
     {
@@ -48,6 +44,8 @@ public class Player : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -83,32 +81,21 @@ public class Player : MonoBehaviour
         right.Normalize();
 
         // Combine input axes
-        Vector3 input = Input.GetAxis("Horizontal") * right + Input.GetAxis("Vertical") * forward;
-
-        // Project onto ground if grounded
-        Vector3 move = input;
-        if (input != Vector3.zero)
-        {
-            if (Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out RaycastHit hit, 1.5f)) // project onto ground
-            {
-                move = Vector3.ProjectOnPlane(input, hit.normal).normalized;
-            }
-        }
+        Vector3 move = (Input.GetAxis("Horizontal") * right + Input.GetAxis("Vertical") * forward).normalized;
         
         // Trigger switch between walk animation or idle animation
-        animator.SetBool("walking", move.magnitude > 0.001f);
+        animator.SetBool("walking", move != Vector3.zero);
+        print(animator.GetBool("walking"));
 
         // Move the player
         rb.MovePosition(rb.position + (sprintInput ? sprintSpeed : walkSpeed) * Time.fixedDeltaTime * move);
-        Vector3 targetVelocity = (sprintInput ? sprintSpeed : walkSpeed) * move;
-        targetVelocity.y = rb.linearVelocity.y; // Keep vertical velocity (gravity)
-        rb.linearVelocity = targetVelocity;
 
         // Rotate the player to face movement direction
         if (move != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(move);
-            body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.fixedDeltaTime * 5f);
+            float angle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(-90f, 0f, angle);  // keep -90 X tilt, rotate around Z
+            body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.fixedDeltaTime * turnSmoothness);
         }
     }
 
