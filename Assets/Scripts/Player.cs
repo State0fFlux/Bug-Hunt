@@ -1,13 +1,34 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+
+public class PlayerState
+{
+    public readonly string name;
+    public readonly float speed;
+    public readonly float animationSpeed;
+    private static readonly float ratio = 10f; // Adjust this ratio to control animation speed relative to movement speed
+
+    public PlayerState(string name, float speed, float animationSpeed)
+    {
+        this.name = name;
+        this.speed = speed;
+        this.animationSpeed = animationSpeed;
+    }
+
+    // Define your "enum" values here
+    public static readonly PlayerState Idle = new("Idle", 0f, 1f);
+    public static readonly PlayerState Walking = new("Walking", 5f, 5f/ratio);
+    public static readonly PlayerState Sprinting = new("Sprinting", 8f, 8f/ratio);
+}
 
 public class Player : MonoBehaviour
 {
+
     // player movement
     [Header("Movement Settings")]
-    public float walkSpeed = 3f; // slowed a little to play nicer with walk cycle
-    public float sprintSpeed = 5f;
+    public float speedScale = 1f;
     public float turnSmoothness = 25f; // delay for smooth turning;
     public Transform cameraPivot; // reference to the camera transform for movement direction
     public Transform body; // reference to the player body transform for rotation
@@ -18,21 +39,22 @@ public class Player : MonoBehaviour
     public static Dictionary<string, int> inventory = new Dictionary<string, int>();
     public static Action OnInventoryUpdate;
 
-    // components
-    private Rigidbody rb;
-    private Animator animator;
-
-    // input variables
-    private bool sprintInput;
-    private float horizontalInput;
-    private float verticalInput;
-
     // camera bobbing
     [Header("Camera Bobbing Settings")]
     public float bobAmount = 0.1f;  // amplitude of bobbing
     private float bobTimer = 0f;
     private Vector3 cameraInitialLocalPos;
 
+    // components
+    private Rigidbody rb;
+    private Animator animator;
+
+    // input variables
+    private PlayerState currState = PlayerState.Idle;
+    private float horizontalInput;
+    private float verticalInput;
+
+    // techy stuff
     public string[] bugs = { "Firefly", "Ladybug" };
 
     void Start()
@@ -47,7 +69,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
-        animator = GetComponent<Animator>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
     }
 
     void Update()
@@ -55,19 +77,21 @@ public class Player : MonoBehaviour
         // Get input
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
-        sprintInput = Input.GetButton("Sprint");
 
         // Camera bobbing
         if (horizontalInput != 0f || verticalInput != 0f)
         {
-            bobTimer += Time.deltaTime * 2 * (sprintInput ? sprintSpeed: walkSpeed);
+            currState = Input.GetButton("Sprint") ? PlayerState.Sprinting : PlayerState.Walking;
+
+            bobTimer += Time.deltaTime * 2 * currState.speed;
             float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
             Vector3 newCamPos = cameraInitialLocalPos + new Vector3(0, bobOffset, 0);
             cameraPivot.localPosition = newCamPos;
         }
         else
         {
-            bobTimer = 0f;
+            currState = PlayerState.Idle;
+            bobTimer = 0;
             cameraPivot.localPosition = Vector3.Lerp(cameraPivot.localPosition, cameraInitialLocalPos, Time.deltaTime * 5f);
         }
     }
@@ -82,38 +106,28 @@ public class Player : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        // Combine input axes
-        Vector3 move = (Input.GetAxis("Horizontal") * right + Input.GetAxis("Vertical") * forward).normalized;
-        
+
         // Trigger switch between walk animation or idle animation
-        animator.SetBool("walking", move != Vector3.zero);
-        print(animator.GetBool("walking"));
-
+        animator.SetBool("walking", currState != PlayerState.Idle);
+        animator.speed = currState.animationSpeed * speedScale;
         // Move the player
-        rb.MovePosition(rb.position + (sprintInput ? sprintSpeed : walkSpeed) * Time.fixedDeltaTime * move);
-
-        // Rotate the player to face movement direction
-        if (move != Vector3.zero)
+        if (currState != PlayerState.Idle)
         {
-            float angle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(-90f, 0f, angle);  // keep -90 X tilt, rotate around Z
-            body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.fixedDeltaTime * turnSmoothness);
+            // Combine input axes
+            Vector3 move = (horizontalInput * right + verticalInput * forward).normalized;
+
+            rb.MovePosition(rb.position + currState.speed * Time.fixedDeltaTime * move * speedScale);
+            float angle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg; // Rotate player to face movement direction
+            Quaternion targetRotation = Quaternion.Euler(0f, angle, 0f);
+            body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.fixedDeltaTime * turnSmoothness * speedScale);
         }
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        // Debug.Log("hit!");
-        // if (other.gameObject.tag == "Bug")
-        // {
         Travel bug = other.gameObject.GetComponent<Travel>();
-            // if (travel.BugSettings.bugName == "LadyBug")
-            // {
-
-            // }
-            CatchBug(bug.settings.bugName);
-            Destroy(other.gameObject);
-        // }
+        CatchBug(bug.settings.bugName);
+        Destroy(other.gameObject);
     }
 
     public void CatchBug(string bug)
