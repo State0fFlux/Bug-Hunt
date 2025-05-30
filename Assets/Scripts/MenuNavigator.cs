@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MenuNavigator : MonoBehaviour
@@ -10,9 +11,13 @@ public class MenuNavigator : MonoBehaviour
 
     public void Quit()
     {
-        // Quit the application
-        Application.Quit();
+        StartCoroutine(WaitAndQuit());
+    }
 
+    IEnumerator WaitAndQuit()
+    {
+        yield return new WaitForSeconds(0.25f);
+        Application.Quit();
         // If running in the editor, stop playing
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
