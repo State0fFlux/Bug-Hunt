@@ -119,7 +119,8 @@ public class Player : MonoBehaviour
 
             rb.MovePosition(rb.position + currState.speed * Time.fixedDeltaTime * move * speedScale);
             float angle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg; // Rotate player to face movement direction
-            Quaternion targetRotation = Quaternion.Euler(0f, angle, 0f);
+            Vector3 currRotation = body.rotation.eulerAngles;
+            Quaternion targetRotation = Quaternion.Euler(currRotation.x, angle, currRotation.z);
             body.rotation = Quaternion.Slerp(body.rotation, targetRotation, Time.fixedDeltaTime * turnSmoothness * speedScale);
         }
     }
