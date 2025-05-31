@@ -24,15 +24,21 @@ public class BugManager : MonoBehaviour
                 Vector3 spawnPos = bugType.settings.origin + Random.insideUnitSphere * bugType.settings.boundaryRadius;
                 spawnPos.y = 0f; // keep on ground plane
 
-                GameObject bugInstance = Instantiate(bugType.bugPrefab, spawnPos, Quaternion.identity);
-
-                Travel wander = bugInstance.GetComponent<Travel>();
-                if (wander != null)
+                Vector3 rayOrigin = new Vector3(spawnPos.x, 200f, spawnPos.z);
+                if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f) && (groundHit.collider.CompareTag("Ground")))
                 {
-                    wander.settings = bugType.settings;
+                    Vector3 surfacePoint = groundHit.point;
 
-                    // Optionally set origin here for each bug individually
-                    // wander.settings.origin = spawnAreaCenter;
+                    GameObject bugInstance = Instantiate(bugType.bugPrefab, surfacePoint, Quaternion.identity);
+
+                    Travel wander = bugInstance.GetComponent<Travel>();
+                    if (wander != null)
+                    {
+                        wander.settings = bugType.settings;
+
+                        // Optionally set origin here for each bug individually
+                        // wander.settings.origin = spawnAreaCenter;
+                    }
                 }
             }
         }
