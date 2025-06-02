@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEditor;
 
 public class BugManager : MonoBehaviour
 {
@@ -12,35 +15,142 @@ public class BugManager : MonoBehaviour
 
     public BugTypeEntry[] bugTypes;
 
+    private Transform bugsParent;
+    private List<Transform> bugTypeParents = new List<Transform>();
+
     // public Vector3 spawnAreaCenter = Vector3.zero;
     // public float spawnAreaRadius = 15f;
 
-    void Start()
+    // void Start()
+    // {
+    //     foreach (var bugType in bugTypes)
+    //     {
+    //         for (int i = 0; i < bugType.spawnCount; i++)
+    //         {
+    //             Vector3 spawnPos = bugType.settings.origin + Random.insideUnitSphere * bugType.settings.boundaryRadius;
+    //             spawnPos.y = 0f; // keep on ground plane
+
+    //             Vector3 rayOrigin = new Vector3(spawnPos.x, 200f, spawnPos.z);
+    //             if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f) && (groundHit.collider.CompareTag("Ground")))
+    //             {
+    //                 Vector3 surfacePoint = groundHit.point;
+
+    //                 GameObject bugInstance = Instantiate(bugType.bugPrefab, surfacePoint, Quaternion.identity);
+
+    //                 Travel wander = bugInstance.GetComponent<Travel>();
+    //                 if (wander != null)
+    //                 {
+    //                     wander.settings = bugType.settings;
+
+    //                     // Optionally set origin here for each bug individually
+    //                     // wander.settings.origin = spawnAreaCenter;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    public void Awake()
     {
-        foreach (var bugType in bugTypes)
+        SetupParentFolder();
+        for (int i = 0; i < bugTypes.Length; ++i)
         {
-            for (int i = 0; i < bugType.spawnCount; i++)
+            BugTypeEntry entry = bugTypes[i];
+            Transform transform = bugTypeParents[i];
+            SpawnCategory(entry.bugPrefab, entry.spawnCount, transform, entry);
+            // Debug.Log($"Spawning {entry.settings.bugName}");
+        }
+        
+    }
+
+    void SetupParentFolder()
+    {
+        bugsParent = GetOrCreateParent("SpawnedBugs");
+
+        if (!bugsParent) Debug.LogError("bugsParent is null!");
+
+        foreach (BugTypeEntry type in bugTypes)
+        {
+            Transform bugsChild = GetOrCreateBugParent(type.settings.bugName);
+            bugTypeParents.Add(bugsChild);
+        }
+    }
+
+    Transform GetOrCreateParent(string name)
+    {
+        GameObject parent = GameObject.Find(name);
+        if (!parent)
+        {
+            parent = new GameObject(name);
+            Undo.RegisterCreatedObjectUndo(parent, $"Create {name}");
+        }
+        if (parent == null)
+        {
+            Debug.LogError($"Failed ot find or create parent {name}!");
+            return null;
+        }
+        return parent.transform;
+    }
+
+    Transform GetOrCreateBugParent(string name)
+    {
+        Transform child = bugsParent.Find(name);
+        if (child != null)
+        {
+            return child;
+        }
+        GameObject childObject = new GameObject(name);
+        childObject.transform.parent = bugsParent;
+        return childObject.transform;
+    }
+
+    void SpawnCategory(GameObject prefab, int amount, Transform parent, BugTypeEntry bugType)
+    {
+        if (parent == null)
+        {
+            Debug.LogError("SpawnCategory called with null parent! Aborting spawn.");
+            return;
+        }
+        // if (prefabs == null || prefabs.Length == 0)
+        // {
+        //     PopulateResources();
+        // }
+
+        for (int i = 0; i < amount; i++)
+        {
+            // GameObject prefab = prefabs[Random.Range(0, prefabs.Length - 1)];
+            Vector3 position = GetRandomPosition(bugType);
+
+            Vector3 rayOrigin = new Vector3(position.x, 200f, position.z);
+            // Debug.Log($"hit at {Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f)}");
+            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f) && groundHit.collider.CompareTag("Ground"))
             {
-                Vector3 spawnPos = bugType.settings.origin + Random.insideUnitSphere * bugType.settings.boundaryRadius;
-                spawnPos.y = 0f; // keep on ground plane
+                Vector3 surfacePoint = groundHit.point;
+                SpawnAt(prefab, surfacePoint, parent);
 
-                Vector3 rayOrigin = new Vector3(spawnPos.x, 200f, spawnPos.z);
-                if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f) && (groundHit.collider.CompareTag("Ground")))
-                {
-                    Vector3 surfacePoint = groundHit.point;
-
-                    GameObject bugInstance = Instantiate(bugType.bugPrefab, surfacePoint, Quaternion.identity);
-
-                    Travel wander = bugInstance.GetComponent<Travel>();
-                    if (wander != null)
-                    {
-                        wander.settings = bugType.settings;
-
-                        // Optionally set origin here for each bug individually
-                        // wander.settings.origin = spawnAreaCenter;
-                    }
-                }
+                Debug.Log("Hit!");
             }
         }
+    }
+
+    void SpawnAt(GameObject prefab, Vector3 position, Transform parent)
+    {
+        GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+        obj.transform.position = position;
+        obj.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        obj.transform.localScale *= Random.Range(0.8f, 1.2f);
+        obj.transform.SetParent(parent);
+        Undo.RegisterCreatedObjectUndo(obj, "Spawn Bug");
+
+        Debug.Log($"Spawning bug at {position} under parent {parent.name}");
+
+    }
+
+    Vector3 GetRandomPosition(BugTypeEntry bugType)
+    {
+
+        Vector2 offset = Random.insideUnitCircle * bugType.settings.boundaryRadius;
+        Vector3 position = new Vector3(offset.x, 0f, offset.y) + bugType.settings.origin;
+        return position;
     }
 }
