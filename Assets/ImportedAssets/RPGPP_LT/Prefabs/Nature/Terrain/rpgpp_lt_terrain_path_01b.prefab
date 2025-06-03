@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33256546363420046}
   - component: {fileID: 23494612884942486}
   - component: {fileID: 7210308864723102958}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: rpgpp_lt_terrain_path_01b
   m_TagString: Ground
   m_Icon: {fileID: 0}

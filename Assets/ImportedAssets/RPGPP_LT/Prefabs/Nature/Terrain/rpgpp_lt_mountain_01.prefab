@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33732981895488272}
   - component: {fileID: 23991852965333892}
   - component: {fileID: -7118112910659108389}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: rpgpp_lt_mountain_01
   m_TagString: Ground
   m_Icon: {fileID: 0}

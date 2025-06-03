@@ -127,9 +127,9 @@ public class Player : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Travel bug = other.gameObject.GetComponent<Travel>();
+        Travel bug = other.gameObject.GetComponentInParent<Travel>(); // the trigger hitbox should be a child of the bug object hence the GetComponentInParent
         CatchBug(bug.settings.bugName);
-        Destroy(other.gameObject);
+        Destroy(other.transform.parent.gameObject); // destroy the bug object (trigger's parent) after catching it
     }
 
     public void CatchBug(string bug)
