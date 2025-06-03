@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33735560036724328}
   - component: {fileID: 23388959142444960}
   - component: {fileID: -7412882866556571054}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: rpgpp_lt_hill_small_01
   m_TagString: Ground
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33916563977071252}
   - component: {fileID: 23168982960894600}
   - component: {fileID: 4438832069724527095}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: rpgpp_lt_terrain_grass_02
   m_TagString: Ground
   m_Icon: {fileID: 0}
