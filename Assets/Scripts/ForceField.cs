@@ -25,7 +25,6 @@ public class ForceField : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        print(collision);
         if (collision.gameObject.CompareTag("Player") && flashRunning == null)
         {
             flashRunning = StartCoroutine(FlashPulse());
