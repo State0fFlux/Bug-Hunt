@@ -45,7 +45,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 77ca67f7b86fb4757bfb9a184a2fab8f, type: 3}
   m_Resource: {fileID: 8300000, guid: 77ca67f7b86fb4757bfb9a184a2fab8f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -54,7 +54,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 0
-  MaxDistance: 10
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 3572740940599607426}
   m_Layer: 8
   m_Name: Hitbox
-  m_TagString: Untagged
+  m_TagString: Bug
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

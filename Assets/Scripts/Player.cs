@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
 
     // player inventory
     [Header("Inventory Settings")]
-    public static int bugsNeeded = 5;
+    public static int bugsNeeded = 1;
     public static Dictionary<string, int> inventory = new Dictionary<string, int>();
     public static Action OnInventoryUpdate;
 
@@ -130,9 +130,30 @@ public class Player : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Travel bug = other.gameObject.GetComponentInParent<Travel>(); // the trigger hitbox should be a child of the bug object hence the GetComponentInParent
-        CatchBug(bug.settings.bugName);
-        Destroy(other.transform.parent.gameObject); // destroy the bug object (trigger's parent) after catching it
+        if (other.CompareTag("Bug"))
+        {
+            Travel bug = other.gameObject.GetComponentInParent<Travel>(); // the trigger hitbox should be a child of the bug object hence the GetComponentInParent
+            CatchBug(bug.settings.bugName);
+            Destroy(other.transform.parent.gameObject); // destroy the bug object (trigger's parent) after catching it
+        }
+        else if (other.CompareTag("ScoutLeader"))
+        {
+            if (CheckInventory()) {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene"); // Load the win scene when all bugs are collected
+            } else {
+                // Show the canvas when the player enters the Scout Leader's trigger area
+                other.transform.parent.GetComponentInChildren<ScoutLeader>().canvas.SetActive(true);
+            }
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("ScoutLeader"))
+        {
+            // Hide the canvas when the player exits the Scout Leader's trigger area
+            other.transform.parent.GetComponentInChildren<ScoutLeader>().canvas.SetActive(false);
+        }
     }
 
     public void CatchBug(string bug)
@@ -143,16 +164,16 @@ public class Player : MonoBehaviour
         CheckInventory();
     }
 
-    public void CheckInventory()
+    // returns true if inventory is complete
+    public bool CheckInventory()
     {
         foreach (var bugCount in inventory.Values)
         {
             if (bugCount < bugsNeeded)
             {
-                return;
+                return false;
             }
         }
-        print("You have enough bugs!");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene"); // Load the win scene when all bugs are collected
+        return true;
     }
 }
