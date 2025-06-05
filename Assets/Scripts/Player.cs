@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
-        animator = transform./*GetChild(0).*/GetComponent<Animator>();
+        animator = transform.GetComponentInChildren<Animator>(); // fixed the issue with animator being in child!!
     }
 
     void Update()
