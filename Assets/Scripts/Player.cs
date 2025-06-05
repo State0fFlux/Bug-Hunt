@@ -6,22 +6,25 @@ using UnityEngine;
 
 public class PlayerState
 {
+    public readonly int state; // index used for animation state machine
     public readonly string name;
     public readonly float speed;
     public readonly float animationSpeed;
     private static readonly float ratio = 10f; // Adjust this ratio to control animation speed relative to movement speed
 
-    public PlayerState(string name, float speed, float animationSpeed)
+    public PlayerState(int state, string name, float speed, float animationSpeed)
     {
+        this.state = state; // for state machine usage
         this.name = name;
         this.speed = speed;
         this.animationSpeed = animationSpeed;
     }
 
     // Define your "enum" values here
-    public static readonly PlayerState Idle = new("Idle", 0f, 1f);
-    public static readonly PlayerState Walking = new("Walking", 5f, 5f/ratio);
-    public static readonly PlayerState Sprinting = new("Sprinting", 8f, 8f/ratio);
+    public static readonly PlayerState Idle = new(0, "Idle", 0f, 1f);
+    public static readonly PlayerState Walking = new(1, "Walking", 5f, 5f/ratio);
+    public static readonly PlayerState Sprinting = new(2, "Sprinting", 8f, 8f/ratio);
+    public static readonly PlayerState TakingBug = new(3, "TakingBug", 0f, 1f);
 }
 
 public class Player : MonoBehaviour
@@ -70,7 +73,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
-        animator = transform.GetChild(0).GetComponent<Animator>();
+        animator = transform./*GetChild(0).*/GetComponent<Animator>();
     }
 
     void Update()
@@ -80,7 +83,7 @@ public class Player : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
 
         // Camera bobbing
-        if (horizontalInput != 0f || verticalInput != 0f)
+        if (Mathf.Abs(horizontalInput) > 0.01f || Mathf.Abs(verticalInput) > 0.01f)
         {
             currState = Input.GetButton("Sprint") ? PlayerState.Sprinting : PlayerState.Walking;
 
@@ -109,8 +112,8 @@ public class Player : MonoBehaviour
 
 
         // Trigger switch between walk animation or idle animation
-        animator.SetBool("walking", currState != PlayerState.Idle);
-        animator.speed = currState.animationSpeed * speedScale;
+        animator.SetInteger("PlayerState", currState.state); // update player animation
+        //animator.speed = currState.animationSpeed * speedScale; // debugging, uncomment later
         // Move the player
         if (currState != PlayerState.Idle)
         {
