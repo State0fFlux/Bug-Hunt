@@ -3,24 +3,26 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Travel : MonoBehaviour
 {
-    public float wanderRadius = 1.5f;         // CIRCLE_RADIUS
-    public float wanderDistance = 2.0f;       // CIRCLE_DISTANCE
-    public float angleChange = 2.5f;          // ANGLE_CHANGE
-    public float speed = 1.0f;
+    // changed these to private as theyre modified with scriptable objects
+    private float speed = 1.0f;
+    private float wanderRadius = 1.5f;         // CIRCLE_RADIUS
+    private float wanderDistance = 2.0f;       // CIRCLE_DISTANCE
+    private Vector3 origin = new Vector3(5, 0, 5);
+    private float boundaryRadius = 5.0f;
 
-    public Vector3 origin = new Vector3(5, 0, 5);
-    public float boundaryRadius = 5.0f;
-
+    private float angleChange = 2.5f;          // ANGLE_CHANGE
     public float pullConst = 1.0f;
 
-    private float wanderAngle = 0f;
+    public float wanderAngle = 0f;
     private Rigidbody rb;
+    private Transform body;
 
     public BugSettings settings;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        body = transform.GetChild(0);
 
         if (settings != null)
         {
@@ -54,11 +56,12 @@ public class Travel : MonoBehaviour
         }
 
         rb.AddForce(wanderForce, ForceMode.Acceleration);
+        Debug.DrawLine(position, position + wanderForce, Color.green);
 
         if (rb.linearVelocity.sqrMagnitude > 0.01f)
         {
             Quaternion look = Quaternion.LookRotation(rb.linearVelocity.normalized);
-            rb.rotation = Quaternion.Slerp(rb.rotation, look, 0.1f);
+            //body.rotation = Quaternion.Slerp(rb.rotation, look, 0.1f);
         }
 
         float maxSpeed = speed;
