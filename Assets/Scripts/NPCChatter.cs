@@ -9,8 +9,8 @@ public class ScoutLeader : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        dialogue = transform.Find("Dialogue").gameObject;
-        exclamation = transform.Find("Exclamation").gameObject;
+        dialogue = transform.parent.Find("Dialogue").gameObject;
+        exclamation = transform.parent.Find("Exclamation").gameObject;
         if (dialogue == null || exclamation == null)
         {
             Debug.LogError("Dialogue or Exclamation GameObject not found in character.");
@@ -30,11 +30,9 @@ public class ScoutLeader : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("A");
         print(other);
         if (other.CompareTag("Player"))
         {
-            print("B");
             dialogue.SetActive(true);
             exclamation.SetActive(false);
             //trigger.enabled = false; // Disable the trigger after the player enters
