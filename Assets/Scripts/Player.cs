@@ -142,15 +142,15 @@ public class Player : MonoBehaviour
             if (CheckInventory())
             {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene"); // Load the win scene when all bugs are collected
-            }
+            }/*
             else
             {
                 // Show the canvas when the player enters the Scout Leader's trigger area
                 other.transform.parent.GetComponentInChildren<ScoutLeader>().canvas.SetActive(true);
-            }
+            }*/
         }
     }
-
+/*
     public void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("ScoutLeader"))
@@ -158,7 +158,7 @@ public class Player : MonoBehaviour
             // Hide the canvas when the player exits the Scout Leader's trigger area
             other.transform.parent.GetComponentInChildren<ScoutLeader>().canvas.SetActive(false);
         }
-    }
+    }*/
 
     public void CatchBug(string bug)
     {
