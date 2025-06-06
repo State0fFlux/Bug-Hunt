@@ -128,7 +128,7 @@ public class BugManager : MonoBehaviour
                 Vector3 surfacePoint = groundHit.point;
                 SpawnAt(prefab, surfacePoint, parent);
 
-                Debug.Log("Hit!");
+                //Debug.Log("Hit!");
             }
         }
     }
@@ -142,7 +142,7 @@ public class BugManager : MonoBehaviour
         obj.transform.SetParent(parent);
         Undo.RegisterCreatedObjectUndo(obj, "Spawn Bug");
 
-        Debug.Log($"Spawning bug at {position} under parent {parent.name}");
+        //Debug.Log($"Spawning bug at {position} under parent {parent.name}");
 
     }
 

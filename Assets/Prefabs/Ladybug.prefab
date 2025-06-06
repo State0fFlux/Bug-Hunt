@@ -42,8 +42,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 77ca67f7b86fb4757bfb9a184a2fab8f, type: 3}
-  m_Resource: {fileID: 8300000, guid: 77ca67f7b86fb4757bfb9a184a2fab8f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 94ec030f149184e79825aa9698b4dc45, type: 3}
+  m_Resource: {fileID: 8300000, guid: 94ec030f149184e79825aa9698b4dc45, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -260,13 +260,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf269e847069d74489df46571d9e2f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRadius: 2
-  wanderDistance: 3
-  angleChange: 0.5
-  speed: 10
-  origin: {x: 0, y: 0, z: 0}
-  boundaryRadius: 5
   pullConst: 1
+  wanderAngle: 0
   settings: {fileID: 11400000, guid: 9162fe853e3694f4bae1c317add9a81d, type: 2}
 --- !u!136 &160757902063349799
 CapsuleCollider:

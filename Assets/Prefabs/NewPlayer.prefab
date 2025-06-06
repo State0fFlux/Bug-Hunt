@@ -54,8 +54,10 @@ MonoBehaviour:
   body: {fileID: 323316048519415799}
   bobAmount: 0
   bugs:
-  - Firefly
+  - Caterpillar
   - Ladybug
+  - Snail
+  - Spider
 --- !u!54 &6152423271181388818
 Rigidbody:
   m_ObjectHideFlags: 0

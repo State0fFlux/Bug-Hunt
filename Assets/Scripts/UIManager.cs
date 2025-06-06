@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
 
     private TextMeshProUGUI inventoryText;
-    public string[] bugs = { "Firefly", "Ladybug" };
+    private string[] bugs = { "Caterpillar", "Ladybug", "Snail", "Spider" };
 
     void Awake()
     {
@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
         inventoryText.text = "";
         foreach (string bug in bugs)
         {
+            print(bug);
             inventoryText.text += bug + "s: " + Player.inventory[bug] + "/" + Player.bugsNeeded + "\n";
         }
     }

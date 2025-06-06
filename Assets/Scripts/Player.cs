@@ -22,9 +22,10 @@ public class PlayerState
 
     // Define your "enum" values here
     public static readonly PlayerState Idle = new(0, "Idle", 0f, 1f);
-    public static readonly PlayerState Walking = new(1, "Walking", 5f, 5f/ratio);
-    public static readonly PlayerState Sprinting = new(2, "Sprinting", 8f, 8f/ratio);
+    public static readonly PlayerState Walking = new(1, "Walking", 5f, 5f / ratio);
+    public static readonly PlayerState Sprinting = new(2, "Sprinting", 8f, 8f / ratio);
     public static readonly PlayerState TakingBug = new(3, "TakingBug", 0f, 1f);
+    public static readonly PlayerState Dancing = new(4, "Dancing", 0f, 1f);
 }
 
 public class Player : MonoBehaviour
@@ -138,9 +139,12 @@ public class Player : MonoBehaviour
         }
         else if (other.CompareTag("ScoutLeader"))
         {
-            if (CheckInventory()) {
+            if (CheckInventory())
+            {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene"); // Load the win scene when all bugs are collected
-            } else {
+            }
+            else
+            {
                 // Show the canvas when the player enters the Scout Leader's trigger area
                 other.transform.parent.GetComponentInChildren<ScoutLeader>().canvas.SetActive(true);
             }
