@@ -262,6 +262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pullConst: 1
   wanderAngle: 0
+  body: {fileID: 6806916003077958193}
   settings: {fileID: 11400000, guid: c4e47e794841d4a4dbb842eaaf62b4ae, type: 2}
 --- !u!136 &160757902063349799
 CapsuleCollider:
@@ -362,5 +363,10 @@ PrefabInstance:
 --- !u!4 &5404310328934085655 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7712264807714272304, guid: 6eb9ed5b7c6caa344a6b8a6e31aba36d, type: 3}
+  m_PrefabInstance: {fileID: 2447847578714832935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6806916003077958193 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9191713167648696854, guid: 6eb9ed5b7c6caa344a6b8a6e31aba36d, type: 3}
   m_PrefabInstance: {fileID: 2447847578714832935}
   m_PrefabAsset: {fileID: 0}

@@ -15,14 +15,14 @@ public class Travel : MonoBehaviour
 
     public float wanderAngle = 0f;
     private Rigidbody rb;
-    private Transform body;
+    public Transform body;
 
     public BugSettings settings;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        body = transform.GetChild(0);
+        // body = transform.GetChild(0);
 
         if (settings != null)
         {
@@ -61,7 +61,8 @@ public class Travel : MonoBehaviour
         if (rb.linearVelocity.sqrMagnitude > 0.01f)
         {
             Quaternion look = Quaternion.LookRotation(rb.linearVelocity.normalized);
-            //body.rotation = Quaternion.Slerp(rb.rotation, look, 0.1f);
+            // body.rotation = Quaternion.Slerp(rb.rotation, look, 0.1f);
+            body.rotation = look;
         }
 
         float maxSpeed = speed;

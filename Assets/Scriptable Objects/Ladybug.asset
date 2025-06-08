@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ladybug
   m_EditorClassIdentifier: 
   bugName: Ladybug
-  speed: 5
+  speed: 3
   wanderRadius: 1.5
   wanderDistance: 2
   origin: {x: 90, y: 25, z: -5}

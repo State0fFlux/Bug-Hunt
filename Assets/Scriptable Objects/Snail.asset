@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Snail
   m_EditorClassIdentifier: 
   bugName: Snail
-  speed: 5
+  speed: 1
   wanderRadius: 1.5
   wanderDistance: 2
   origin: {x: 115, y: 25, z: 75}
