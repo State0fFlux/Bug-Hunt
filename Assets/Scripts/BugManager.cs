@@ -138,9 +138,12 @@ public class BugManager : MonoBehaviour
         GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
         obj.transform.position = position;
         obj.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
-        obj.transform.localScale *= Random.Range(0.8f, 1.2f);
+        obj.transform.localScale *= Random.Range(0.5f, 1.5f); // increased scale range for more variety
         obj.transform.SetParent(parent);
         Undo.RegisterCreatedObjectUndo(obj, "Spawn Bug");
+
+        Animator animator = obj.GetComponentInChildren<Animator>();
+        animator.Play("Walk");
 
         //Debug.Log($"Spawning bug at {position} under parent {parent.name}");
 

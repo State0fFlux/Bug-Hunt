@@ -61,8 +61,8 @@ public class Travel : MonoBehaviour
         if (rb.linearVelocity.sqrMagnitude > 0.01f)
         {
             Quaternion look = Quaternion.LookRotation(rb.linearVelocity.normalized);
-            // body.rotation = Quaternion.Slerp(rb.rotation, look, 0.1f);
-            body.rotation = look;
+            body.rotation = Quaternion.Slerp(rb.rotation, look, 5f);
+            //body.rotation = look;
         }
 
         float maxSpeed = speed;

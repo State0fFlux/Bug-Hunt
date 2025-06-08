@@ -403,11 +403,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lady Bug
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3465977107778169775, guid: 85ff771833835894daeeef451db609b5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7794545627457339501, guid: 85ff771833835894daeeef451db609b5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2587101680316376714}
   m_SourcePrefab: {fileID: 100100000, guid: 85ff771833835894daeeef451db609b5, type: 3}
+--- !u!1 &2769724935796616301 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7794545627457339501, guid: 85ff771833835894daeeef451db609b5, type: 3}
+  m_PrefabInstance: {fileID: 5358091500839873536}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2587101680316376714
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2769724935796616301}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 291b38c360a4f8047955c8aeb8076ad0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &7836919752019992421 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2781420454844134245, guid: 85ff771833835894daeeef451db609b5, type: 3}

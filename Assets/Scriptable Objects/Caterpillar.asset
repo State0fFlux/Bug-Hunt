@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Caterpillar
   m_EditorClassIdentifier: 
   bugName: Caterpillar
-  speed: 2
+  speed: 0.5
   wanderRadius: 1.5
   wanderDistance: 2
   origin: {x: 20, y: 25, z: 25}
-  boundaryRadius: 20
+  boundaryRadius: 30

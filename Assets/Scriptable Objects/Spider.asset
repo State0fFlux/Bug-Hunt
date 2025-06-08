@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Spider
   m_EditorClassIdentifier: 
   bugName: Spider
-  speed: 4
+  speed: 1
   wanderRadius: 1.5
   wanderDistance: 2
   origin: {x: 40, y: 25, z: 85}
-  boundaryRadius: 20
+  boundaryRadius: 30

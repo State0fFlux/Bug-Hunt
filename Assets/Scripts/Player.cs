@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
 
     // player inventory
     [Header("Inventory Settings")]
-    public static int bugsNeeded = 1;
+    public static int bugsNeeded = 5;
     public static Dictionary<string, int> inventory = new Dictionary<string, int>();
     public static Action OnInventoryUpdate;
 
@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     // components
     private Rigidbody rb;
     private Animator animator;
+    private AudioSource collectSound;
 
     // input variables
     private PlayerState currState = PlayerState.Idle;
@@ -75,6 +76,8 @@ public class Player : MonoBehaviour
         rb.freezeRotation = true;
 
         animator = transform.GetComponentInChildren<Animator>(); // fixed the issue with animator being in child!!
+
+        collectSound = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -133,39 +136,41 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("Bug"))
         {
-            Travel bug = other.gameObject.GetComponentInParent<Travel>(); // the trigger hitbox should be a child of the bug object hence the GetComponentInParent
-            CatchBug(bug.settings.bugName);
-            Destroy(other.transform.parent.gameObject); // destroy the bug object (trigger's parent) after catching it
+            GameObject bug = other.transform.parent.gameObject;
+            CatchBug(bug);
         }
         else if (other.CompareTag("ScoutLeader"))
         {
             if (CheckInventory())
             {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene"); // Load the win scene when all bugs are collected
-            }/*
-            else
-            {
-                // Show the canvas when the player enters the Scout Leader's trigger area
-                other.transform.parent.GetComponentInChildren<ScoutLeader>().canvas.SetActive(true);
-            }*/
+            }
         }
     }
-/*
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("ScoutLeader"))
+    /*
+        public void OnTriggerExit(Collider other)
         {
-            // Hide the canvas when the player exits the Scout Leader's trigger area
-            other.transform.parent.GetComponentInChildren<ScoutLeader>().canvas.SetActive(false);
-        }
-    }*/
+            if (other.CompareTag("ScoutLeader"))
+            {
+                // Hide the canvas when the player exits the Scout Leader's trigger area
+                other.transform.parent.GetComponentInChildren<ScoutLeader>().canvas.SetActive(false);
+            }
+        }*/
 
-    public void CatchBug(string bug)
+    public void CatchBug(GameObject bug)
     {
         print("Gotcha!");
-        inventory[bug]++;
-        OnInventoryUpdate?.Invoke();
-        CheckInventory();
+        string bugName = bug.GetComponent<Travel>().settings.bugName; // get the bug name from the Travel component
+        if (inventory[bugName] < bugsNeeded)
+        {
+            collectSound.pitch = 1f + UnityEngine.Random.Range(-0.1f, 0.1f); // randomize pitch slightly
+            collectSound.Play();
+
+            inventory[bugName]++;
+            OnInventoryUpdate?.Invoke();
+            CheckInventory();
+            Destroy(bug);
+        }
     }
 
     // returns true if inventory is complete
