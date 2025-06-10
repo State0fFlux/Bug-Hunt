@@ -116,14 +116,15 @@ public class BugManager : MonoBehaviour
         //     PopulateResources();
         // }
 
+    int groundLayerMask = LayerMask.GetMask("Walls & Floor"); // only detects objects on the "Ground" layer
+
         for (int i = 0; i < amount; i++)
         {
             // GameObject prefab = prefabs[Random.Range(0, prefabs.Length - 1)];
             Vector3 position = GetRandomPosition(bugType);
 
             Vector3 rayOrigin = new Vector3(position.x, 200f, position.z);
-            // Debug.Log($"hit at {Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f)}");
-            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f) && groundHit.collider.CompareTag("Ground"))
+            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f, groundLayerMask) && groundHit.collider.CompareTag("Ground"))
             {
                 Vector3 surfacePoint = groundHit.point;
                 SpawnAt(prefab, surfacePoint, parent);
