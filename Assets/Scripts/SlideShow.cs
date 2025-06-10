@@ -11,7 +11,7 @@ public class SlideShow : MonoBehaviour
     public AudioClip endSound;
     private List<GameObject> slides = new List<GameObject>();
     private int currentSlide = 0;
-    private AudioSource audio;
+    private AudioSource audioSrc;
 
     void Awake()
     {
@@ -24,7 +24,7 @@ public class SlideShow : MonoBehaviour
 
     void Start()
     {
-        audio = sfx.GetComponent<AudioSource>();
+        audioSrc = sfx.GetComponent<AudioSource>();
         ShowSlide(0);
     }
 
@@ -41,6 +41,10 @@ public class SlideShow : MonoBehaviour
         for (int i = 0; i < slides.Count; i++)
         {
             slides[i].SetActive(i == index);
+            if (i == index)
+            {
+                slides[i].GetComponentInChildren<TypewriterEffect>()?.StartTyping(); // Start typing effect if available
+            }
         }
     }
 
@@ -49,12 +53,12 @@ public class SlideShow : MonoBehaviour
         currentSlide++;
         if (currentSlide < slides.Count)
         {
-            audio.PlayOneShot(nextSound); // Play slide change sound
+            audioSrc.PlayOneShot(nextSound); // Play slide change sound
             ShowSlide(currentSlide);
         }
         else
         {
-            audio.PlayOneShot(endSound); // Play end sound
+            audioSrc.PlayOneShot(endSound); // Play end sound
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
         }
     }

@@ -6,7 +6,7 @@ public class MenuNavigator : MonoBehaviour
     public void Play()
     {
         // Load the game scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene("CutsceneScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("IntroCutscene");
     }
 
     public void Quit()
