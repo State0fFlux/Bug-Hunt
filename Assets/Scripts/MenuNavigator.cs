@@ -20,6 +20,12 @@ public class MenuNavigator : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("IntroCutscene");
     }
 
+    public void Lobby()
+    {
+        // Load the lobby scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene("LobbyScene");
+    }
+
     public void Quit()
     {
         StartCoroutine(WaitAndQuit());
