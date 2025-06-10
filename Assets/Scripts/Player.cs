@@ -86,11 +86,24 @@ public class Player : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        // Camera bobbing
+        // Set player state based on input
+        if (Input.GetButtonDown("Dance"))
+        {
+            currState = PlayerState.Dancing; // switch to Dancing state when dance button is pressed
+        }
         if (Mathf.Abs(horizontalInput) > 0.01f || Mathf.Abs(verticalInput) > 0.01f)
         {
-            currState = Input.GetButton("Sprint") ? PlayerState.Sprinting : PlayerState.Walking;
+            currState = Input.GetButton("Sprint") ? PlayerState.Sprinting : PlayerState.Walking; // switch to Walking or Sprinting state based on input
+        }
+        else if (currState != PlayerState.Dancing)
+        {
+            currState = PlayerState.Idle;
+        }
 
+        // Camera bobbing effect (deprecated)
+        if (Mathf.Abs(horizontalInput) > 0.01f || Mathf.Abs(verticalInput) > 0.01f)
+        {
+            //currState = Input.GetButton("Sprint") ? PlayerState.Sprinting : PlayerState.Walking;
             bobTimer += Time.deltaTime * 2 * currState.speed;
             float bobOffset = Mathf.Sin(bobTimer) * bobAmount;
             Vector3 newCamPos = cameraInitialLocalPos + new Vector3(0, bobOffset, 0);
@@ -98,7 +111,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            currState = PlayerState.Idle;
+            //currState = PlayerState.Idle;
             bobTimer = 0;
             cameraPivot.localPosition = Vector3.Lerp(cameraPivot.localPosition, cameraInitialLocalPos, Time.deltaTime * 5f);
         }

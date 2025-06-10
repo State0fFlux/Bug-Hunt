@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 // this script expects to be attached to a GameObject with child GameObjects representing slides
 // each child GameObject should be a canvas slide that can be activated or deactivated
@@ -30,7 +31,7 @@ public class SlideShow : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             NextSlide();
         }
