@@ -4,6 +4,7 @@ using UnityEngine;
 public class BugSettings : ScriptableObject
 {
     public string bugName;
+    public int spawnCount;
     public float speed = 1.0f;
     public float wanderRadius = 1.5f;
     public float wanderDistance = 2.0f;

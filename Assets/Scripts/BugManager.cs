@@ -18,38 +18,6 @@ public class BugManager : MonoBehaviour
     private Transform bugsParent;
     private List<Transform> bugTypeParents = new List<Transform>();
 
-    // public Vector3 spawnAreaCenter = Vector3.zero;
-    // public float spawnAreaRadius = 15f;
-
-    // void Start()
-    // {
-    //     foreach (var bugType in bugTypes)
-    //     {
-    //         for (int i = 0; i < bugType.spawnCount; i++)
-    //         {
-    //             Vector3 spawnPos = bugType.settings.origin + Random.insideUnitSphere * bugType.settings.boundaryRadius;
-    //             spawnPos.y = 0f; // keep on ground plane
-
-    //             Vector3 rayOrigin = new Vector3(spawnPos.x, 200f, spawnPos.z);
-    //             if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit groundHit, 200f) && (groundHit.collider.CompareTag("Ground")))
-    //             {
-    //                 Vector3 surfacePoint = groundHit.point;
-
-    //                 GameObject bugInstance = Instantiate(bugType.bugPrefab, surfacePoint, Quaternion.identity);
-
-    //                 Travel wander = bugInstance.GetComponent<Travel>();
-    //                 if (wander != null)
-    //                 {
-    //                     wander.settings = bugType.settings;
-
-    //                     // Optionally set origin here for each bug individually
-    //                     // wander.settings.origin = spawnAreaCenter;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
     public void Awake()
     {
         SetupParentFolder();
@@ -57,7 +25,7 @@ public class BugManager : MonoBehaviour
         {
             BugTypeEntry entry = bugTypes[i];
             Transform transform = bugTypeParents[i];
-            SpawnCategory(entry.bugPrefab, entry.spawnCount, transform, entry);
+            SpawnCategory(entry.bugPrefab, entry.settings.spawnCount, transform, entry);
             // Debug.Log($"Spawning {entry.settings.bugName}");
         }
         

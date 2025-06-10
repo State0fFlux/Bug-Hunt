@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Spider
   m_EditorClassIdentifier: 
   bugName: Spider
+  spawnCount: 9
   speed: 1
   wanderRadius: 1.5
   wanderDistance: 2

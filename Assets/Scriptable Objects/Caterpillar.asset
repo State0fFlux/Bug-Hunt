@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Caterpillar
   m_EditorClassIdentifier: 
   bugName: Caterpillar
+  spawnCount: 8
   speed: 0.5
   wanderRadius: 1.5
   wanderDistance: 2

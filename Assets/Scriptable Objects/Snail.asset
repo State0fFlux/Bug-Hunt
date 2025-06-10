@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Snail
   m_EditorClassIdentifier: 
   bugName: Snail
+  spawnCount: 13
   speed: 0.25
   wanderRadius: 1.5
   wanderDistance: 2
