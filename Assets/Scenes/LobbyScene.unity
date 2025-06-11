@@ -156,8 +156,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1912470348}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.4424501}
+  m_AnchorMax: {x: 1, y: 0.9999999}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -371,7 +371,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 100}
+  m_AnchoredPosition: {x: -550, y: 100}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &598506852
@@ -423,7 +423,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: b22e709d695d145d3ba7d537cddcb6e4, type: 3}
+          m_ObjectArgument: {fileID: 8300000, guid: 644aeb52490684b5ea9c11dc0c65fb6f, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -562,8 +562,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 66832776}
   m_HandleRect: {fileID: 66832775}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.50338936
+  m_Value: 0.9999997
+  m_Size: 0.5575498
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -643,8 +643,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000015259, y: 5.0021}
-  m_SizeDelta: {x: 1412.8552, y: 537.1818}
+  m_AnchoredPosition: {x: -0.000015259, y: -2.4638}
+  m_SizeDelta: {x: 1412.8552, y: 552.1136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &706930430
 MonoBehaviour:
@@ -887,9 +887,9 @@ RectTransform:
   m_Father: {fileID: 706930429}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &874210457
 MonoBehaviour:
@@ -1105,7 +1105,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 4d63db06b86d24a97887aec98b4a108e, type: 3}
+          m_ObjectArgument: {fileID: 8300000, guid: af5b18e2fc9ac440ea3595b229de0633, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -1540,7 +1540,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: b22e709d695d145d3ba7d537cddcb6e4, type: 3}
+          m_ObjectArgument: {fileID: 8300000, guid: af5b18e2fc9ac440ea3595b229de0633, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -1764,7 +1764,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 39050df3b517849baae035955233f0ad, type: 3}
   m_Resource: {fileID: 8300000, guid: 39050df3b517849baae035955233f0ad, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1964,7 +1964,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1691089127
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2060,8 +2060,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.00018310547}
+  m_SizeDelta: {x: 0, y: 438.1364}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1769027528
 MonoBehaviour:
@@ -2088,7 +2088,7 @@ MonoBehaviour:
     \u2013  Scripting, Bug Movement\n<color=#F0A568><b>Sal Harris</b></color> \u2013
     Character design, Animation, 2D Artwork\n<color=#F0A568><b>Viba Raghunathan</b></color>
     \u2013 Model rigging, Animation\n\n<size=130%>ASSETS</size>\n<color=#80A0C9>\"Ultimate
-    Animated Character Pack\"</color> \u2013 Quaternius (uaternius.com/index.html)\n<color=#80A0C9>\"Low
+    Animated Character Pack\"</color> \u2013 Quaternius (Quaternius.com/index.html)\n<color=#80A0C9>\"Low
     Poly Insects\"</color> \u2013 9t5 (9t5sounds.wixsite.com/9t5design)\n<color=#80A0C9>\"Casual
     Low Poly Tent Pack\" </color> \u2013 Fast Mesh\n<color=#80A0C9>\"RPG Poly Pack\"
     </color> \u2013 Gigel (gigel.artstation.com)\n\n<size=130%>AUDIO</size>\n<color=#8EB387>\"Tiny
@@ -2159,7 +2159,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 30, y: 30, z: 30, w: 30}
+  m_margin: {x: 1.7573742, y: 1.1220865, z: 16.873657, w: 30}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2746,7 +2746,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -550, y: 100}
+  m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2031266087
@@ -2798,7 +2798,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: b22e709d695d145d3ba7d537cddcb6e4, type: 3}
+          m_ObjectArgument: {fileID: 8300000, guid: 644aeb52490684b5ea9c11dc0c65fb6f, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -2863,6 +2863,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 678618520142057037, guid: c1a07506c48c745fba411cf089d3fd5b, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7700642048265649495, guid: c1a07506c48c745fba411cf089d3fd5b, type: 3}
       propertyPath: m_Name
       value: SFX
