@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class PlayerState

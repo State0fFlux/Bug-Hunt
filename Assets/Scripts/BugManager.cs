@@ -1,7 +1,9 @@
 using System.Collections.Generic;
-
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class BugManager : MonoBehaviour
 {
@@ -50,7 +52,9 @@ public class BugManager : MonoBehaviour
         if (!parent)
         {
             parent = new GameObject(name);
+#if UNITY_EDITOR
             Undo.RegisterCreatedObjectUndo(parent, $"Create {name}");
+#endif
         }
         if (parent == null)
         {
@@ -104,6 +108,7 @@ public class BugManager : MonoBehaviour
 
     void SpawnAt(GameObject prefab, Vector3 position, Transform parent)
     {
+        /*
         GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
         obj.transform.position = position;
         obj.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
@@ -112,9 +117,15 @@ public class BugManager : MonoBehaviour
         Undo.RegisterCreatedObjectUndo(obj, "Spawn Bug");
 
         Animator animator = obj.GetComponentInChildren<Animator>();
-        animator.Play("Walk");
+        animator.Play("Walk");*/
+        GameObject obj = Instantiate(prefab, position, Quaternion.Euler(0, Random.Range(0, 360), 0), parent);
+        obj.transform.localScale *= Random.Range(0.5f, 1.5f); // random scale
 
-        //Debug.Log($"Spawning bug at {position} under parent {parent.name}");
+        Animator animator = obj.GetComponentInChildren<Animator>();
+        if (animator != null)
+        {
+            animator.Play("Walk");
+        }
 
     }
 

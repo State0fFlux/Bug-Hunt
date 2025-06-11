@@ -8,22 +8,54 @@ public class MouseLook : MonoBehaviour
     public float maximumY = 30f;
 
     private float rotationY = 0f;
+    private bool cursorLocked = true;
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; // Hide and lock the cursor
+        LockCursor();
     }
 
     void Update()
     {
-        float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
-        rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-        rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
-        transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+        HandleCursorToggle();
+
+        if (cursorLocked)
+        {
+            float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+            rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
+            transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+        }
+    }
+
+    void HandleCursorToggle()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UnlockCursor();
+        }
+        else if (!cursorLocked && Input.GetMouseButtonDown(0))
+        {
+            LockCursor();
+        }
+    }
+
+    void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        cursorLocked = true;
+    }
+
+    void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        cursorLocked = false;
     }
 
     void OnDestroy()
     {
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor when the script is destroyed
+        UnlockCursor();
     }
 }

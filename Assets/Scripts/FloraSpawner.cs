@@ -1,4 +1,6 @@
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
 
 public class FloraSpawner : MonoBehaviour
@@ -134,3 +136,4 @@ Transform GetOrCreateParent(string name)
         return new Vector3(circle.x, 0f, circle.y) + transform.position;
     }
 }
+#endif // UNITY_EDITOR
