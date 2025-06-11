@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
 
     // player inventory
     [Header("Inventory Settings")]
-    public static int bugsNeeded = 1;
+    public static int bugsNeeded = 5;
     public static Dictionary<string, int> inventory = new Dictionary<string, int>();
     public static Action OnInventoryUpdate;
 
