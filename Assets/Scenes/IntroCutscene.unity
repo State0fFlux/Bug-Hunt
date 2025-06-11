@@ -553,7 +553,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4ec72f6ce8a4e8eaa0ca62da3f42b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeTime: 2
   isQuote: 1
 --- !u!1 &286877030
 GameObject:
@@ -857,7 +856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4ec72f6ce8a4e8eaa0ca62da3f42b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeTime: 2
   isQuote: 1
 --- !u!1 &789520388
 GameObject:
@@ -1045,7 +1043,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4ec72f6ce8a4e8eaa0ca62da3f42b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeTime: 2
   isQuote: 0
 --- !u!114 &845028703
 MonoBehaviour:
@@ -1255,7 +1252,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 50, y: 0}
-  m_SizeDelta: {x: 1288.1758, y: 157.4297}
+  m_SizeDelta: {x: 1483, y: 157.4297}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &933898286
 MonoBehaviour:
@@ -1277,7 +1274,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: to earn your Junior Bug Hunting Badge!?
+  m_text: to earn your Junior Bug-Catching Badge!?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 790f694c636334e29a4593f111ad7057, type: 2}
   m_sharedMaterial: {fileID: -7077998291210190596, guid: 790f694c636334e29a4593f111ad7057, type: 2}
@@ -1368,7 +1365,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4ec72f6ce8a4e8eaa0ca62da3f42b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeTime: 2
   isQuote: 1
 --- !u!1 &969593380
 GameObject:
@@ -1640,7 +1636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4ec72f6ce8a4e8eaa0ca62da3f42b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeTime: 2
   isQuote: 1
 --- !u!114 &1354278361
 MonoBehaviour:
@@ -2305,7 +2300,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4ec72f6ce8a4e8eaa0ca62da3f42b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeTime: 2
   isQuote: 1
 --- !u!114 &1660777215
 MonoBehaviour:
@@ -2796,7 +2790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4ec72f6ce8a4e8eaa0ca62da3f42b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeTime: 2
   isQuote: 0
 --- !u!114 &2018793504
 MonoBehaviour:

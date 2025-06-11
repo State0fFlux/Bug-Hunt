@@ -5,7 +5,7 @@ using TMPro;
 
 public class TypewriterEffect : MonoBehaviour
 {
-    public float typeTime = 2f; // time in seconds to type the full text
+    private float typeTime = 1f; // time in seconds to type the full text
     public bool isQuote = true; // whether the text is a quote
     private TextMeshProUGUI textComponent;
     private string baseText;
