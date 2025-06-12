@@ -1,8 +1,9 @@
-# Garden Scavenger Hunt
-CSE 457 - Final Artifact
-
 # Bug Hunt
 
+## Project Background
+Bug Hunt was developed as the final artifact for CSE 457: Computer Graphics at the University of Washington. It was selected as the First Place Winner among all final projects!
+
+## Premise
 Bug Hunt is a low-poly, third-person cozy exploration game that follows a frog boy scout on his journey to impress his scout leader, and finally earn his Bug-Catching Badge. Inspired by games like Animal Crossing, the game is focused on exploration and collecting a number of different types of bugs to meet the goal.
 
 The game takes place in a forested campsite, with tents scattered around the map and various bugs roaming freely in the forest. The player can explore the environment and collect different bugs like ladybugs, caterpillars, spiders, and snails. The game also has background music and the bugs make noise based on proximity!
