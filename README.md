@@ -26,16 +26,22 @@ The game begins with a short 2D cutscene introducing the story and player’s go
 
 # Meet the Team
 **Brady Manske**: World design, UI programming, audio
+
 **Kathryn Xiong**: Scripting, bug movement
+
 **S. Harris**: Character + model design, modeling, rigging and animations, 2D cutscene artwork/design
+
 **Viba Raghunathan**: Character + model building, rigging and animations
 
 ## Technology Stack
 - **Engine**: Unity 6000.0.44f1
 - **Languages**: C#
-- **Art & Design**: Krita, Blender
-- **Animation** Mixamo
+- **2D Design**: Krita
+- **3D Modeling**: Blender, Unity Asset Store, itch.io
+- **3D Animation** Mixamo
 - **Sound Design**: Audacity
+
+_** Please view in-game credits for a comprehensive list of assets used_
 
 ## Public Demo
 - This game is currently up on my [itch.io](https://state0fflux.itch.io/bug-hunt) account!
