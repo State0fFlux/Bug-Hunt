@@ -51,7 +51,6 @@ public class Player : MonoBehaviour
     // components
     private Rigidbody rb;
     private Animator animator;
-    private AudioSource audioSrc;
 
     // input variables
     private PlayerState currState = PlayerState.Idle;
@@ -60,9 +59,9 @@ public class Player : MonoBehaviour
 
     // techy stuff
     [Header("Techy Stuff")]
-    public AudioClip yaySound; // sound to play when all bugs are collected
+    public AudioClip yay; // sound to play when all bugs are collected
+    public AudioClip catchSound; // sound to play when catching a bug
     public string[] bugs = { "Firefly", "Ladybug" };
-    public GameObject sfx; // reference to the GameObject with the AudioSource component
 
     void Start()
     {
@@ -77,8 +76,6 @@ public class Player : MonoBehaviour
         rb.freezeRotation = true;
 
         animator = transform.GetComponentInChildren<Animator>(); // fixed the issue with animator being in child!!
-
-        audioSrc = sfx.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -157,8 +154,7 @@ public class Player : MonoBehaviour
         {
             if (CheckInventory())
             {
-                //audioSrc.pitch = 1f; // reset pitch to normal
-                audioSrc.PlayOneShot(yaySound); // Play a sound when all bugs are collected
+                AudioManager.Instance.PlaySFX(yay); // Play a sound when all bugs are collected
                 UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene"); // Load the win scene when all bugs are collected
             }
         }
@@ -179,8 +175,7 @@ public class Player : MonoBehaviour
         string bugName = bug.GetComponent<Travel>().settings.bugName; // get the bug name from the Travel component
         if (inventory[bugName] < bugsNeeded)
         {
-            audioSrc.pitch = 1f + UnityEngine.Random.Range(-0.1f, 0.1f); // randomize pitch slightly
-            audioSrc.Play();
+            AudioManager.Instance.PlaySFX(catchSound, 1f + UnityEngine.Random.Range(-0.1f, 0.1f)); // play the catch sound
 
             inventory[bugName]++;
             OnInventoryUpdate?.Invoke();

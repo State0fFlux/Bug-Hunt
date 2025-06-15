@@ -6,13 +6,10 @@ using UnityEngine.InputSystem;
 // each child GameObject should be a canvas slide that can be activated or deactivated
 public class SlideShow : MonoBehaviour
 {
-
-    public GameObject sfx; // reference to the GameObject with the AudioSource component
     public AudioClip nextSound;
     public AudioClip endSound;
     private List<GameObject> slides = new List<GameObject>();
     private int currentSlide = 0;
-    private AudioSource audioSrc;
 
     void Awake()
     {
@@ -25,7 +22,6 @@ public class SlideShow : MonoBehaviour
 
     void Start()
     {
-        audioSrc = sfx.GetComponent<AudioSource>();
         ShowSlide(0);
     }
 
@@ -54,12 +50,12 @@ public class SlideShow : MonoBehaviour
         currentSlide++;
         if (currentSlide < slides.Count)
         {
-            audioSrc.PlayOneShot(nextSound); // Play slide change sound
+            AudioManager.Instance.PlaySFX(nextSound); // Play next sound
             ShowSlide(currentSlide);
         }
         else
         {
-            audioSrc.PlayOneShot(endSound); // Play end sound
+            AudioManager.Instance.PlaySFX(endSound); // Play end sound
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
         }
     }
